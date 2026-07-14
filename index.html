@@ -57,7 +57,7 @@
   .hero-top{display:flex;gap:30px;align-items:flex-start;}
   .portrait{
     flex:0 0 auto;
-    width:132px;height:132px;
+    width:140px;height:184px;
     border-radius:16px;
     object-fit:cover;
     border:1px solid var(--line);
@@ -167,11 +167,10 @@
   /* ---------- education ---------- */
   .edu{display:grid;gap:20px;}
   .edu-item{display:grid;grid-template-columns:120px 1fr;gap:22px;}
+  .edu-side{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
   .edu-when{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);}
-  .edu-body{display:flex;gap:14px;align-items:flex-start;}
-  .edu-logo{width:52px;height:52px;flex:0 0 auto;object-fit:contain;
+  .edu-logo{width:54px;height:54px;object-fit:contain;
     border:1px solid var(--line);border-radius:11px;background:#fff;padding:5px;}
-  .edu-text{flex:1 1 auto;min-width:0;}
   .edu-body h3{font-family:var(--display);font-weight:600;font-size:1.06rem;margin:0 0 .15rem;}
   .edu-body .where{color:var(--ink-soft);font-size:.96rem;margin:0 0 .1rem;}
   .edu-body .note{color:var(--ink-soft);font-size:.92rem;margin:.3rem 0 0;}
@@ -313,7 +312,7 @@
     body{font-size:16px;}
     header.hero{padding:52px 0 30px;}
     .hero-top{flex-direction:column;gap:20px;}
-    .portrait{width:104px;height:104px;}
+    .portrait{width:116px;height:152px;}
     .pub,.edu-item,.talk{grid-template-columns:1fr;gap:8px;}
     .pub-meta,.edu-when,.talk .tv{order:-1;}
     .sec-head{flex-direction:column;gap:4px;}
@@ -493,40 +492,40 @@
     <div class="sec-head"><h2>Education</h2><span class="sec-tag">timeline</span></div>
     <div class="edu">
       <div class="edu-item">
-        <div class="edu-when">2025 — present</div>
-        <div class="edu-body">
+        <div class="edu-side">
+          <div class="edu-when">2025 — present</div>
           <img class="edu-logo" src="logos/dgist.png" alt="DGIST logo" onerror="this.style.display='none'">
-          <div class="edu-text">
-            <h3>M.S. Student, Artificial Intelligence</h3>
-            <p class="where">DGIST · Daegu, Republic of Korea</p>
-            <p class="note">PAC Lab, advised by Prof. Young-Sik Kim. Research on LLM watermarking, semantic security, and in-vehicle network security.</p>
-          </div>
+        </div>
+        <div class="edu-body">
+          <h3>M.S. Student, Artificial Intelligence</h3>
+          <p class="where">DGIST · Daegu, Republic of Korea</p>
+          <p class="note">PAC Lab, advised by Prof. Young-Sik Kim. Research on LLM watermarking, semantic security, and in-vehicle network security.</p>
         </div>
       </div>
       <div class="edu-item">
-        <div class="edu-when">2021 — 2025</div>
-        <div class="edu-body">
+        <div class="edu-side">
+          <div class="edu-when">2021 — 2025</div>
           <img class="edu-logo" src="logos/ulsan.png" alt="University of Ulsan logo" onerror="this.style.display='none'">
-          <div class="edu-text">
-            <h3>B.Eng. in AI Convergence</h3>
-            <p class="where">University of Ulsan · IT Convergence, College of Engineering</p>
-            <div class="stat-row">
-              <div class="stat"><span class="n">4.23 / 4.5</span><span class="l">Cumulative GPA</span></div>
-              <div class="stat"><span class="n">4.16 / 4.5</span><span class="l">Major GPA</span></div>
-              <div class="stat"><span class="n">2 / 10</span><span class="l">Class rank</span></div>
-            </div>
-            <div class="courses">
-              <span class="chip">Deep Learning</span>
-              <span class="chip">Reinforcement Learning</span>
-              <span class="chip">Information Theory for ML</span>
-              <span class="chip">Advanced Information Theory</span>
-              <span class="chip">Big Data Analysis</span>
-              <span class="chip">Numerical Analysis for ML</span>
-              <span class="chip">Data Communications &amp; Networks</span>
-              <span class="chip">Advanced Deep Learning</span>
-              <span class="chip">Data Structures</span>
-              <span class="chip">Algorithms</span>
-            </div>
+        </div>
+        <div class="edu-body">
+          <h3>B.Eng. in AI Convergence</h3>
+          <p class="where">University of Ulsan · IT Convergence, College of Engineering</p>
+          <div class="stat-row">
+            <div class="stat"><span class="n">4.23 / 4.5</span><span class="l">Cumulative GPA</span></div>
+            <div class="stat"><span class="n">4.16 / 4.5</span><span class="l">Major GPA</span></div>
+            <div class="stat"><span class="n">2 / 10</span><span class="l">Class rank</span></div>
+          </div>
+          <div class="courses">
+            <span class="chip">Deep Learning</span>
+            <span class="chip">Reinforcement Learning</span>
+            <span class="chip">Information Theory for ML</span>
+            <span class="chip">Advanced Information Theory</span>
+            <span class="chip">Big Data Analysis</span>
+            <span class="chip">Numerical Analysis for ML</span>
+            <span class="chip">Data Communications &amp; Networks</span>
+            <span class="chip">Advanced Deep Learning</span>
+            <span class="chip">Data Structures</span>
+            <span class="chip">Algorithms</span>
           </div>
         </div>
       </div>
