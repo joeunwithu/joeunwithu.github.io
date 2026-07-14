@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Joeun Kim — Security Researcher, DGIST</title>
+<script>
+  (function(){var t;try{t=localStorage.getItem('theme');}catch(e){}
+   if(!t) t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+   document.documentElement.dataset.theme=t;
+   document.documentElement.classList.add('js');})();
+</script>
+<meta name="description" content="Joeun Kim is a graduate researcher at DGIST working on security across large language models, communications, and in-vehicle networks." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --card:#F6F8FC;
+    --ink:#151B24;
+    --ink-soft:#4C5563;
+    --line:#E4E7EC;
+    --accent:#2456C7;
+    --accent-deep:#183F8F;
+    --accent-tint:#E9EFFB;
+    --display:"Space Grotesk", sans-serif;
+    --body:"Source Serif 4", Georgia, serif;
+    --mono:"IBM Plex Mono", ui-monospace, monospace;
+    --maxw:770px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.68;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{color:var(--accent-deep);text-decoration:underline;text-underline-offset:2px;}
+  ::selection{background:var(--accent);color:#fff;}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px;}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px;}
+
+  /* ---------- eyebrow / labels ---------- */
+  .eyebrow{
+    font-family:var(--display);
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    font-weight:600;
+  }
+
+  /* ---------- hero ---------- */
+  header.hero{padding:74px 0 40px;}
+  .hero-top{display:flex;gap:30px;align-items:flex-start;}
+  .portrait{
+    flex:0 0 auto;
+    width:140px;height:184px;
+    border-radius:16px;
+    object-fit:cover;
+    border:1px solid var(--line);
+    box-shadow:0 14px 34px -18px rgba(22,33,28,.5);
+  }
+  .hero-id{flex:1 1 auto;min-width:0;}
+  .hero-id h1{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(2.5rem,6.4vw,3.8rem);
+    line-height:1.02;
+    letter-spacing:-.025em;
+    margin:.35rem 0 .5rem;
+  }
+  .hero-id h1 .han{
+    font-size:.42em;
+    font-weight:400;
+    letter-spacing:0;
+    color:var(--ink-soft);
+    margin-left:.5em;
+    vertical-align:.18em;
+  }
+  .tagline{
+    font-family:var(--body);
+    font-size:1.12rem;
+    color:var(--ink-soft);
+    max-width:46ch;
+    margin:0;
+  }
+  .tagline b{color:var(--ink);font-weight:600;}
+
+  .contact{
+    display:flex;flex-wrap:wrap;gap:9px;margin-top:22px;
+    font-family:var(--mono);font-size:.78rem;
+  }
+  .contact a{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:7px 12px;border:1px solid var(--line);border-radius:999px;
+    background:var(--card);color:var(--ink);
+    transition:border-color .18s ease, color .18s ease, transform .18s ease;
+  }
+  .contact a:hover{border-color:var(--accent);color:var(--accent);text-decoration:none;transform:translateY(-1px);}
+  .contact svg{width:14px;height:14px;flex:0 0 auto;}
+
+  /* ---------- section scaffold ---------- */
+  section{padding:44px 0;border-top:1px solid var(--line);}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;}
+  .sec-head h2{
+    font-family:var(--display);font-weight:600;font-size:1.5rem;
+    letter-spacing:-.01em;margin:0;
+  }
+  .sec-tag{font-family:var(--display);font-size:.7rem;font-weight:600;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--accent);white-space:nowrap;}
+
+  .prose p{margin:0 0 1.05em;color:var(--ink-soft);}
+  .prose p:last-child{margin-bottom:0;}
+  .prose strong{color:var(--ink);font-weight:600;}
+
+  /* ---------- research threads ---------- */
+  .threads{display:grid;gap:14px;}
+  .thread{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:20px 22px;transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .thread:hover{border-color:#c3d3c8;box-shadow:0 12px 30px -22px rgba(22,33,28,.5);}
+  .thread .dom{font-family:var(--display);font-size:.68rem;font-weight:600;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--accent);}
+  .thread h3{font-family:var(--display);font-weight:600;font-size:1.08rem;
+    margin:.35rem 0 .5rem;}
+  .thread p{margin:0;color:var(--ink-soft);font-size:.98rem;line-height:1.6;}
+
+  /* ---------- publications ---------- */
+  .legend{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);
+    margin:-8px 0 22px;}
+  .legend b{color:var(--ink);font-weight:600;}
+  .pub{
+    display:grid;grid-template-columns:120px 1fr;gap:22px;
+    padding:20px 0;border-top:1px dashed var(--line);
+  }
+  .pub:first-of-type{border-top:none;}
+  .pub-meta{font-family:var(--mono);font-size:.72rem;line-height:1.5;}
+  .venue{display:inline-block;color:var(--accent-deep);font-weight:600;
+    letter-spacing:.02em;}
+  .yr{color:var(--ink-soft);}
+  .status{
+    display:inline-block;margin-top:7px;padding:2px 8px;border-radius:999px;
+    background:var(--accent-tint);color:var(--accent-deep);
+    font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .status.review{background:#F1EEE6;color:#7A6A45;}
+  .toptier{display:inline-block;margin-top:7px;padding:2px 9px;border-radius:999px;
+    background:#E5484D;color:#fff;font-weight:600;
+    font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;
+    box-shadow:0 2px 7px rgba(229,72,77,.45);}
+  .pub-body .title{font-family:var(--display);font-weight:500;font-size:1.04rem;
+    line-height:1.35;color:var(--ink);}
+  .pub-body .authors{font-size:.95rem;color:var(--ink-soft);margin:.3rem 0 0;}
+  .pub-body .authors .me{color:var(--ink);font-weight:600;}
+  .pub-links{margin-top:.55rem;display:flex;gap:8px;flex-wrap:wrap;}
+  .pub-links a{
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;
+    padding:3px 9px;border:1px solid var(--line);border-radius:6px;
+    color:var(--ink);
+  }
+  .pub-links a:hover{border-color:var(--accent);color:var(--accent);text-decoration:none;}
+
+  /* ---------- education ---------- */
+  .edu{display:grid;gap:20px;}
+  .edu-item{display:grid;grid-template-columns:120px 1fr;gap:22px;}
+  .edu-side{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
+  .edu-when{font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);}
+  .edu-logo{width:100%;max-width:118px;aspect-ratio:1/1;object-fit:contain;
+    border:1px solid var(--line);border-radius:13px;background:#fff;padding:8px;}
+  .edu-body h3{font-family:var(--display);font-weight:600;font-size:1.06rem;margin:0 0 .15rem;}
+  .edu-body .where{color:var(--ink-soft);font-size:.96rem;margin:0 0 .1rem;}
+  .edu-body .note{color:var(--ink-soft);font-size:.92rem;margin:.3rem 0 0;}
+
+  .stat-row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 4px;}
+  .stat{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:9px 14px;line-height:1.2;
+  }
+  .stat .n{font-family:var(--display);font-weight:600;font-size:1.15rem;color:var(--accent-deep);}
+  .stat .l{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-soft);display:block;margin-top:2px;}
+
+  .courses{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;}
+  .courses .chip{
+    font-family:var(--mono);font-size:.7rem;color:var(--ink-soft);
+    padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);
+  }
+
+  /* ---------- talks ---------- */
+  .talks{display:grid;gap:0;}
+  .talk{display:grid;grid-template-columns:120px 1fr;gap:22px;
+    padding:14px 0;border-top:1px dashed var(--line);}
+  .talk:first-child{border-top:none;}
+  .talk .tv{font-family:var(--mono);font-size:.72rem;color:var(--accent-deep);font-weight:600;}
+  .talk .tt{font-size:.98rem;color:var(--ink);}
+  .talk .tt span{color:var(--ink-soft);display:block;font-size:.86rem;margin-top:1px;}
+
+  /* ---------- footer ---------- */
+  footer{padding:40px 0 60px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  footer a{color:var(--ink-soft);}
+  footer a:hover{color:var(--accent);}
+
+  /* ---------- signature: seed → sprout → flower ---------- */
+  .gamecard{
+    margin-top:34px;width:300px;max-width:100%;
+    background:#fff;border:1px solid var(--line);border-radius:18px;
+    padding:14px 14px 15px;
+    box-shadow:0 18px 40px -26px rgba(21,27,36,.5);
+    cursor:pointer;user-select:none;
+    transition:transform .15s ease, box-shadow .2s ease;
+  }
+  .gamecard:hover{transform:translateY(-2px);box-shadow:0 22px 46px -24px rgba(36,86,199,.38);}
+  .gamecard:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .stage{
+    position:relative;height:150px;border-radius:12px;overflow:hidden;
+    background:linear-gradient(180deg,#eef3ff 0%, #e2ebfd 100%);
+  }
+  .sprite{position:absolute;left:50%;bottom:2px;transform:translateX(-50%);width:130px;height:auto;}
+
+  .lvl{position:absolute;top:8px;right:12px;z-index:2;
+    font-family:"Baloo 2",sans-serif;font-weight:700;font-size:.82rem;
+    color:var(--accent-deep);line-height:1;transform-origin:right center;}
+
+  .levelup{
+    position:absolute;top:12px;left:50%;
+    transform:translateX(-50%) rotate(-4deg) scale(.5) translateY(8px);
+    font-family:"Baloo 2",sans-serif;font-weight:800;font-size:.98rem;
+    color:#fff;background:var(--accent);padding:3px 12px 4px;border-radius:9px;
+    box-shadow:0 3px 0 var(--accent-deep);white-space:nowrap;opacity:0;z-index:3;
+    transition:opacity .35s ease;
+  }
+
+  .spark{position:absolute;width:12px;height:12px;background:#ffd23f;opacity:0;z-index:1;
+    clip-path:polygon(50% 0,59% 41%,100% 50%,59% 59%,50% 100%,41% 59%,0 50%,41% 41%);}
+  .spark.s1{top:34px;left:24px;} .spark.s2{top:56px;right:22px;width:9px;height:9px;}
+  .spark.s3{top:26px;right:40px;width:8px;height:8px;} .spark.s4{top:74px;left:42px;width:7px;height:7px;}
+  .spark.s5{top:48px;left:60px;width:10px;height:10px;}
+
+  .xp{margin-top:12px;height:12px;border-radius:999px;background:#e9edf4;
+    overflow:hidden;border:1px solid var(--line);}
+  .xp-fill{display:block;height:100%;width:0;border-radius:999px;
+    background:linear-gradient(90deg,#4f83ea,var(--accent));transition:width .6s ease;}
+  .hint{margin-top:9px;font-family:"Baloo 2",sans-serif;font-weight:600;font-size:.72rem;
+    color:var(--ink-soft);letter-spacing:.01em;text-align:center;}
+
+  /* transform origins for the sprite parts */
+  .seed,.stem,.head,.leaf,.petal,.top,.eyes{transform-box:fill-box;}
+  .stem,.head,.top,.seed{transform-origin:center bottom;}
+  .leafL{transform-origin:right center;}
+  .leafR{transform-origin:left center;}
+  .petal{transform-origin:center bottom;}
+  .eyes{transform-origin:center center;}
+
+  /* idle life (always on) */
+  .top{animation:sway 3.8s ease-in-out infinite;}
+  .eyes{animation:blink 4.4s ease infinite;}
+
+  /* seed hides once growth starts */
+  .seed{opacity:1;transition:opacity .4s ease;}
+  .gamecard.r1 .seed{opacity:0;}
+
+  /* stem grows at level 1 */
+  .stem{transform:scaleY(0);transition:transform .6s cubic-bezier(.2,.8,.3,1);}
+  .gamecard.r1 .stem{transform:scaleY(1);}
+
+  /* level parts: hidden until their level is reached, then pop in */
+  .p1,.p2,.p3{opacity:0;transform:scale(0);
+    transition:transform .55s cubic-bezier(.2,1.7,.4,1), opacity .35s ease;}
+  .head{transition:transform .55s cubic-bezier(.2,1.7,.4,1), opacity .35s ease, fill .4s ease;}
+  .gamecard.r1 .p1{opacity:1;transform:scale(1);}
+  .gamecard.r2 .p2{opacity:1;transform:scale(1);}
+  .gamecard.r3 .p3{opacity:1;transform:scale(1);}
+  /* head becomes the flower's center when it blooms */
+  .gamecard.r3 .head{fill:#ffd23f;}
+
+  /* sequence the first sprout: stem, then head, leaves, face */
+  .gamecard.r1 .head{transition-delay:.42s;}
+  .gamecard.r1 .p1.leafL{transition-delay:.52s;}
+  .gamecard.r1 .p1.leafR{transition-delay:.58s;}
+  .gamecard.r1 .face{transition-delay:.66s;}
+
+  /* level-up burst: banner + sparkles + label pop */
+  .gamecard.leveling .levelup{opacity:1;animation:bannerPop .6s cubic-bezier(.2,1.7,.4,1);}
+  .gamecard.leveling .lvl{animation:lvlPop .5s cubic-bezier(.2,1.7,.4,1);}
+  .gamecard.leveling .spark{animation:sparkle 1.2s ease;}
+  .gamecard.leveling .s1{animation-delay:.02s;} .gamecard.leveling .s2{animation-delay:.22s;}
+  .gamecard.leveling .s3{animation-delay:.1s;} .gamecard.leveling .s4{animation-delay:.3s;}
+  .gamecard.leveling .s5{animation-delay:.0s;}
+
+  @keyframes bannerPop{
+    0%{opacity:0;transform:translateX(-50%) rotate(-4deg) scale(.5) translateY(8px)}
+    60%{opacity:1;transform:translateX(-50%) rotate(-4deg) scale(1.14) translateY(0)}
+    100%{opacity:1;transform:translateX(-50%) rotate(-4deg) scale(1) translateY(0)}}
+  @keyframes lvlPop{0%{transform:scale(1)}40%{transform:scale(1.55)}100%{transform:scale(1)}}
+  @keyframes sparkle{0%,100%{opacity:0;transform:scale(0) rotate(0)}50%{opacity:1;transform:scale(1) rotate(90deg)}}
+  @keyframes sway{0%,100%{transform:rotate(-3.5deg)}50%{transform:rotate(3.5deg)}}
+  @keyframes blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(.12)}}
+
+  @media (prefers-reduced-motion:reduce){
+    .gamecard *{animation:none !important;transition:none !important;}
+    .levelup{opacity:1;transform:translateX(-50%) rotate(-4deg);}
+  }
+
+  /* ===== top nav + progress ===== */
+  .topnav{position:sticky;top:0;z-index:50;
+    background:var(--paper);
+    background:color-mix(in srgb, var(--paper) 82%, transparent);
+    backdrop-filter:saturate(1.4) blur(10px);
+    -webkit-backdrop-filter:saturate(1.4) blur(10px);
+    border-bottom:1px solid var(--line);}
+  .topnav-inner{max-width:var(--maxw);margin:0 auto;padding:0 26px;height:54px;
+    display:flex;align-items:center;gap:16px;}
+  .brand{font-family:var(--display);font-weight:600;font-size:.98rem;color:var(--ink);
+    letter-spacing:-.01em;}
+  .brand:hover{text-decoration:none;color:var(--accent);}
+  .navlinks{display:flex;gap:16px;margin-left:auto;font-family:var(--display);
+    font-size:.82rem;font-weight:500;}
+  .navlinks a{color:var(--ink-soft);padding:4px 1px;position:relative;}
+  .navlinks a:hover{color:var(--accent);text-decoration:none;}
+  .navlinks a.active{color:var(--accent);}
+  .navlinks a.active::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;
+    background:var(--accent);border-radius:2px;}
+  .themebtn{margin-left:6px;border:1px solid var(--line);background:var(--card);
+    color:var(--ink);width:34px;height:34px;border-radius:9px;cursor:pointer;
+    font-size:.95rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;
+    transition:border-color .18s ease, transform .18s ease;}
+  .themebtn:hover{border-color:var(--accent);transform:translateY(-1px);}
+  .progress{position:absolute;left:0;bottom:-1px;height:2px;width:0;
+    background:linear-gradient(90deg,var(--accent),var(--accent-deep));}
+  @media (max-width:620px){ .navlinks{display:none;} .themebtn{margin-left:auto;} }
+
+  /* ===== scroll reveal ===== */
+  .reveal{transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.3,1);}
+  .js .reveal{opacity:0;transform:translateY(16px);}
+  .js .reveal.in{opacity:1;transform:none;}
+
+  /* ===== photo-forward hero ===== */
+  header.hero{position:relative;}
+  header.hero::before{content:"";position:absolute;z-index:0;
+    left:-46px;top:14px;width:310px;height:310px;border-radius:50%;pointer-events:none;
+    background:radial-gradient(closest-side, color-mix(in srgb,var(--accent) 30%, transparent), transparent);
+    filter:blur(8px);opacity:.55;}
+  .hero-top,.gamecard{position:relative;z-index:1;}
+  .portrait{width:156px;height:206px;box-shadow:0 22px 52px -20px rgba(36,86,199,.42);}
+
+  /* ===== highlights gallery ===== */
+  .gallery{display:flex;flex-wrap:wrap;gap:12px;}
+  .shot{position:relative;margin:0;flex:1 1 220px;max-width:340px;aspect-ratio:4/3;
+    border-radius:13px;overflow:hidden;border:1px solid var(--line);
+    background:linear-gradient(135deg,var(--accent-tint),var(--card));}
+  .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+  .shot figcaption{position:absolute;left:0;right:0;bottom:0;padding:16px 10px 8px;z-index:1;
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.03em;color:#fff;
+    background:linear-gradient(180deg,transparent,rgba(9,13,20,.72));}
+
+  /* ===== hero widgets row (plant + cat) ===== */
+  .hero-widgets{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;
+    margin-top:34px;position:relative;z-index:1;}
+  .hero-widgets .gamecard{margin-top:0;}
+
+  /* ===== visitor greeter cat ===== */
+  .catcard{width:210px;max-width:100%;background:#fff;border:1px solid var(--line);
+    border-radius:18px;padding:14px 14px 15px;
+    box-shadow:0 18px 40px -26px rgba(21,27,36,.5);
+    cursor:pointer;user-select:none;transition:transform .15s ease, box-shadow .2s ease;}
+  .catcard:hover{transform:translateY(-2px);box-shadow:0 22px 46px -24px rgba(246,165,74,.42);}
+  .catcard:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .catstage{position:relative;height:150px;border-radius:12px;overflow:hidden;
+    background:linear-gradient(180deg,#fff5ea,#ffe4cb);
+    display:flex;align-items:flex-end;justify-content:center;}
+  .cat{width:118px;height:auto;margin-bottom:-2px;}
+  .cat,.paw,.ceyes{transform-box:fill-box;}
+  .cat{transform-origin:center bottom;animation:cbob 3s ease-in-out infinite;}
+  .paw{transform-origin:center bottom;animation:cwave 1.1s ease-in-out infinite;}
+  .ceyes{transform-origin:center center;animation:cblink 4s ease infinite;}
+  .heart{position:absolute;left:50%;top:42%;transform:translate(-50%,0);
+    font-size:22px;color:#ff6b8a;opacity:0;pointer-events:none;z-index:2;}
+  .hello-count{margin-top:9px;text-align:center;font-family:"Baloo 2",sans-serif;
+    font-weight:600;font-size:.82rem;color:var(--ink-soft);}
+  .hello-count b{display:inline-block;color:var(--accent-deep);font-weight:800;font-size:1.08rem;}
+
+  .catcard.hi .cat{animation:cpop .42s ease;}
+  .catcard.hi .paw{animation:cwave .3s ease 2;}
+  .catcard.hi .heart{animation:hfloat .9s ease;}
+  .catcard.hi .hello-count b{animation:lvlPop .42s cubic-bezier(.2,1.7,.4,1);}
+
+  @keyframes cbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
+  @keyframes cwave{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(18deg)}}
+  @keyframes cblink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+  @keyframes cpop{0%{transform:scale(1)}40%{transform:scale(1.12) translateY(-4px)}100%{transform:scale(1)}}
+  @keyframes hfloat{0%{opacity:0;transform:translate(-50%,0) scale(.5)}
+    25%{opacity:1;transform:translate(-50%,-10px) scale(1)}
+    100%{opacity:0;transform:translate(-50%,-44px) scale(.9)}}
+  @media (prefers-reduced-motion:reduce){
+    .cat,.paw,.ceyes{animation:none !important;}
+    .catcard.hi *{animation:none !important;}
+  }
+
+  /* ===== dark mode ===== */
+  [data-theme="dark"]{
+    --paper:#0E1420; --card:#161F2E; --ink:#E8EEF6; --ink-soft:#98A4B6;
+    --line:#26324A; --accent:#6C9BF3; --accent-deep:#B7CEFF; --accent-tint:#1C2942;
+  }
+  [data-theme="dark"] .gamecard{background:var(--card);}
+  [data-theme="dark"] .stage{background:linear-gradient(180deg,#1a2436,#131b2b);}
+  [data-theme="dark"] .xp{background:#1c2740;}
+  [data-theme="dark"] .status.review{background:#2a2a1f;color:#d8c98f;}
+  [data-theme="dark"] .thread:hover{border-color:#3a496a;box-shadow:0 12px 30px -22px rgba(0,0,0,.6);}
+  [data-theme="dark"] .portrait{box-shadow:0 22px 52px -20px rgba(0,0,0,.6);}
+  [data-theme="dark"] .catcard{background:var(--card);}
+  [data-theme="dark"] .catstage{background:linear-gradient(180deg,#2b241d,#1e1813);}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:620px){
+    body{font-size:16px;}
+    header.hero{padding:52px 0 30px;}
+    .hero-top{flex-direction:column;gap:20px;}
+    .portrait{width:116px;height:152px;}
+    .pub,.edu-item,.talk{grid-template-columns:1fr;gap:8px;}
+    .pub-meta,.edu-when,.talk .tv{order:-1;}
+    .sec-head{flex-direction:column;gap:4px;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav" aria-label="Section navigation">
+  <div class="topnav-inner">
+    <a class="brand" href="#top">Joeun&nbsp;Kim</a>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#education">Education</a>
+      <a href="#highlights">Highlights</a>
+      <a href="#talks">Talks</a>
+    </div>
+    <button class="themebtn" id="themebtn" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+  </div>
+  <span class="progress" id="progress"></span>
+</nav>
+
+<div class="wrap">
+
+  <!-- ================= HERO ================= -->
+  <header class="hero" id="top">
+    <div class="hero-top">
+      <img class="portrait" src="profile.jpg" alt="Portrait of Joeun Kim" />
+      <div class="hero-id">
+        <span class="eyebrow">Security Researcher · DGIST</span>
+        <h1>Joeun Kim<span class="han">김조은</span></h1>
+        <p class="tagline"><b>Once a seed, now a sprout.</b> A security researcher working across AI, communications, and vehicle security.</p>
+        <nav class="contact" aria-label="Contact links">
+          <a href="mailto:jowithu@dgist.ac.kr">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            jowithu@dgist.ac.kr</a>
+          <a href="https://github.com/joeunwithu" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.6 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5Z"/></svg>
+            github.com/joeunwithu</a>
+          <a href="https://www.linkedin.com/in/joeun-kim-dgist" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 20.4h-3.5v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6h.1c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v6.2ZM5.3 7.4a2 2 0 1 1 0-4.1 2 2 0 0 1 0 4.1ZM7.1 20.4H3.6V9h3.5v11.4ZM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.8 1.7h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0Z"/></svg>
+            LinkedIn</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="hero-widgets">
+    <!-- signature: a seed grows into a sprout, then blooms -->
+    <div class="gamecard" id="gamecard" tabindex="0" role="button"
+         aria-label="A little seed grows into a sprout and blooms into a flower. Activate to grow it.">
+      <div class="stage">
+        <span class="lvl">Lv.1</span>
+        <span class="levelup">LEVEL&nbsp;UP!</span>
+        <span class="spark s1"></span>
+        <span class="spark s2"></span>
+        <span class="spark s3"></span>
+        <span class="spark s4"></span>
+        <span class="spark s5"></span>
+        <svg class="sprite" viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path class="pot" d="M37 95 L83 95 L77 119 Q76.5 121 74 121 L46 121 Q43.5 121 43 119 Z" fill="#6f97ea"/>
+          <rect class="rim" x="33" y="86" width="54" height="10" rx="5" fill="#3f66c9"/>
+          <ellipse class="soil" cx="60" cy="90" rx="23" ry="4.6" fill="#5b4636"/>
+          <ellipse class="seed" cx="60" cy="87" rx="4" ry="5.4" fill="#835e3d"/>
+          <g class="top">
+            <rect class="stem" x="57.5" y="50" width="5" height="42" rx="2.5" fill="#3aa15a"/>
+            <!-- lower leaves: bloom at Lv.2 -->
+            <g transform="rotate(-22 60 80)"><ellipse class="leaf leafL p2" cx="50" cy="80" rx="8.5" ry="5" fill="#3fa862"/></g>
+            <g transform="rotate(22 60 82)"><ellipse class="leaf leafR p2" cx="70" cy="82" rx="8" ry="4.8" fill="#38a05b"/></g>
+            <!-- upper leaves: Lv.1 -->
+            <g transform="rotate(-24 60 64)"><ellipse class="leaf leafL p1" cx="50" cy="64" rx="9.5" ry="5.6" fill="#46b96b"/></g>
+            <g transform="rotate(24 60 68)"><ellipse class="leaf leafR p1" cx="70" cy="68" rx="9" ry="5.3" fill="#3fa862"/></g>
+            <!-- flower petals: bloom at Lv.3 -->
+            <g class="flower">
+              <g transform="rotate(0 60 45)"><ellipse class="petal p3" cx="60" cy="32" rx="5" ry="8.2" fill="#ff8fb0"/></g>
+              <g transform="rotate(60 60 45)"><ellipse class="petal p3" cx="60" cy="32" rx="5" ry="8.2" fill="#ff8fb0"/></g>
+              <g transform="rotate(120 60 45)"><ellipse class="petal p3" cx="60" cy="32" rx="5" ry="8.2" fill="#ff8fb0"/></g>
+              <g transform="rotate(180 60 45)"><ellipse class="petal p3" cx="60" cy="32" rx="5" ry="8.2" fill="#ff8fb0"/></g>
+              <g transform="rotate(240 60 45)"><ellipse class="petal p3" cx="60" cy="32" rx="5" ry="8.2" fill="#ff8fb0"/></g>
+              <g transform="rotate(300 60 45)"><ellipse class="petal p3" cx="60" cy="32" rx="5" ry="8.2" fill="#ff8fb0"/></g>
+            </g>
+            <circle class="head p1" cx="60" cy="45" r="14.5" fill="#4cc274"/>
+            <g class="face p1">
+              <g class="eyes">
+                <ellipse class="eye" cx="55" cy="44" rx="1.7" ry="2.5" fill="#23403a"/>
+                <ellipse class="eye" cx="65" cy="44" rx="1.7" ry="2.5" fill="#23403a"/>
+              </g>
+              <circle class="cheek" cx="50.5" cy="48.8" r="2.2" fill="#ff9db0" opacity=".85"/>
+              <circle class="cheek" cx="69.5" cy="48.8" r="2.2" fill="#ff9db0" opacity=".85"/>
+              <path class="mouth" d="M56 49 Q60 53.5 64 49" stroke="#23403a" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="xp"><i class="xp-fill"></i></div>
+      <div class="hint">tap to grow ▸</div>
+    </div>
+
+    <!-- visitor greeter: a waving welcome cat -->
+    <div class="catcard" id="catcard" tabindex="0" role="button" aria-label="Wave hello to the welcome cat. Tap to say hi.">
+      <div class="catstage">
+        <span class="heart" id="heart">❤</span>
+        <svg class="cat" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <ellipse class="cbody" cx="60" cy="99" rx="30" ry="21" fill="#F6A54A"/>
+          <ellipse cx="60" cy="101" rx="18" ry="11" fill="#fff6ec"/>
+          <path d="M40 42 L33 19 L56 34 Z" fill="#F6A54A"/>
+          <path d="M80 42 L87 19 L64 34 Z" fill="#F6A54A"/>
+          <path d="M43 38 L39 26 L52 34 Z" fill="#ff9db0"/>
+          <path d="M77 38 L81 26 L68 34 Z" fill="#ff9db0"/>
+          <circle cx="60" cy="54" r="26" fill="#F6A54A"/>
+          <path d="M60 30 v9" stroke="#e08a2e" stroke-width="3" stroke-linecap="round"/>
+          <path d="M50 31 l-3 8" stroke="#e08a2e" stroke-width="3" stroke-linecap="round"/>
+          <path d="M70 31 l3 8" stroke="#e08a2e" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="60" cy="62" rx="16" ry="11" fill="#fff6ec"/>
+          <g class="ceyes">
+            <ellipse class="ceye" cx="51" cy="53" rx="2.6" ry="3.4" fill="#3a2a1e"/>
+            <ellipse class="ceye" cx="69" cy="53" rx="2.6" ry="3.4" fill="#3a2a1e"/>
+          </g>
+          <circle cx="45.5" cy="61" r="3.1" fill="#ff9db0" opacity=".8"/>
+          <circle cx="74.5" cy="61" r="3.1" fill="#ff9db0" opacity=".8"/>
+          <path d="M57.6 58 L62.4 58 L60 61 Z" fill="#ff7a95"/>
+          <path d="M60 61 v2.6 M60 63.6 q-3.6 2.8 -6.6 1 M60 63.6 q3.6 2.8 6.6 1" stroke="#3a2a1e" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+          <path d="M40 57 l-12 -3 M40 61 l-12 1 M80 57 l12 -3 M80 61 l12 1" stroke="#dca772" stroke-width="1.2" stroke-linecap="round" opacity=".85"/>
+          <path d="M45 76 q15 9 30 0" stroke="#2456C7" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <circle cx="60" cy="80" r="4" fill="#ffd23f" stroke="#e0a900" stroke-width="1"/>
+          <g class="paw">
+            <rect x="82" y="56" width="9" height="30" rx="4.5" fill="#F6A54A"/>
+            <ellipse cx="86.5" cy="54" rx="7.6" ry="6.6" fill="#F6A54A"/>
+            <ellipse cx="86.5" cy="54" rx="4" ry="3.4" fill="#ffe3c6"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hello-count"><b id="hellos">0</b> hellos</div>
+      <div class="hint">tap to say hi ▸</div>
+    </div>
+    </div><!-- /.hero-widgets -->
+  </header>
+
+  <!-- ================= ABOUT ================= -->
+  <section id="about">
+    <div class="sec-head"><h2>About</h2><span class="sec-tag">who / where</span></div>
+    <div class="prose">
+      <p>I'm an <strong>M.S. student in the Department of Artificial Intelligence at DGIST</strong>, working in the <strong>PAC Lab</strong> under Prof. Young-Sik Kim. I finished my B.Eng. in AI Convergence at the University of Ulsan, and my work sits at the meeting point of machine learning, communications, and security.</p>
+      <p>My work is in <strong>security research</strong> — and within it, three areas in particular: <strong>AI security</strong>, <strong>communications security</strong>, and <strong>vehicle security</strong>.</p>
+    </div>
+  </section>
+
+  <!-- ================= RESEARCH ================= -->
+  <section id="research">
+    <div class="sec-head"><h2>Research</h2><span class="sec-tag">three threads</span></div>
+    <div class="threads">
+      <div class="thread">
+        <span class="dom">Language Models</span>
+        <h3>LLM Text Watermarking</h3>
+        <p>Reliable multi-bit watermarks that survive paraphrasing and editing. My work reframes extraction as designated verification (<b>BREW</b>) and adds calibrated soft-decision decoding (<b>CORE-BREW</b>) to drive false positives down without sacrificing detection power.</p>
+      </div>
+      <div class="thread">
+        <span class="dom">Communications</span>
+        <h3>Semantic Security for 6G</h3>
+        <p>Protecting <em>meaning</em>, not just bits, at the wireless edge — using context asymmetry, metadata camouflage, and prior restoration to secure 6G edge networks without heavy negotiation.</p>
+      </div>
+      <div class="thread">
+        <span class="dom">Autonomous Vehicles</span>
+        <h3>In-Vehicle Network Security</h3>
+        <p>A unified LLM-based intrusion detection system that reads both Automotive Ethernet and CAN traffic, bridging heterogeneous protocols through protocol-specific semantic extractors and multi-modal pre-training.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PUBLICATIONS ================= -->
+  <section id="publications">
+    <div class="sec-head"><h2>Publications</h2></div>
+
+    <article class="pub">
+      <div class="pub-meta"><span class="venue">Preprint</span><br><span class="yr">arXiv · 2026</span><br><span class="status review">Under review</span></div>
+      <div class="pub-body">
+        <div class="title">Compression Asymmetry and Trajectory Binding in Noise-Anchored Diffusion Inversion</div>
+        <p class="authors">Yongseong Park, <span class="me">Joeun Kim</span>, HoEun Kim, Young-Sik Kim</p>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2607.09784" target="_blank" rel="noopener">arXiv:2607.09784</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="pub">
+      <div class="pub-meta"><span class="venue">Preprint</span><br><span class="yr">arXiv · 2026</span><br><span class="status review">Under review</span></div>
+      <div class="pub-body">
+        <div class="title">CORE-BREW: LLR-Based Soft Decoding for Robust Multi-Bit LLM Watermarking</div>
+        <p class="authors"><span class="me">Joeun Kim</span>, HoEun Kim, Young-Sik Kim</p>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2606.24163" target="_blank" rel="noopener">arXiv:2606.24163</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="pub">
+      <div class="pub-meta"><span class="venue">ICML</span><br><span class="yr">2026</span><br><span class="toptier">Top Tier</span><br><span class="status">Accepted</span></div>
+      <div class="pub-body">
+        <div class="title">Block-wise Codeword Embedding for Reliable Multi-bit Text Watermarking</div>
+        <p class="authors"><span class="me">Joeun Kim</span>, HoEun Kim, Dongsup Jin, Young-Sik Kim</p>
+        <div class="pub-links">
+          <a href="https://icml.cc/virtual/2026/poster/63246" target="_blank" rel="noopener">ICML Poster</a>
+          <a href="https://arxiv.org/abs/2605.00348" target="_blank" rel="noopener">arXiv:2605.00348</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="pub">
+      <div class="pub-meta"><span class="venue">IEEE Network</span><br><span class="yr">2026</span></div>
+      <div class="pub-body">
+        <div class="title">Negotiation-Free Semantic Security for 6G Edge Networks: Context Asymmetry, Metadata Camouflage, and Prior Restoration</div>
+        <p class="authors"><span class="me">Joeun Kim</span>, Young-Sik Kim</p>
+      </div>
+    </article>
+
+    <article class="pub">
+      <div class="pub-meta"><span class="venue">JCCI</span><br><span class="yr">2026</span></div>
+      <div class="pub-body">
+        <div class="title">Security Vulnerability Analysis of Shao's Semantic Communication</div>
+        <p class="authors"><span class="me">Joeun Kim</span>, Woo Sang Im, Young-Sik Kim</p>
+      </div>
+    </article>
+
+    <article class="pub">
+      <div class="pub-meta"><span class="venue">ICTC</span><br><span class="yr">2025</span></div>
+      <div class="pub-body">
+        <div class="title">LLM-based Hybrid Intrusion Detection for Automotive Ethernet and In-Vehicle Networks</div>
+        <p class="authors"><span class="me">Joeun Kim</span>, Young-Sik Kim</p>
+      </div>
+    </article>
+
+    <article class="pub">
+      <div class="pub-meta"><span class="venue">KICS</span><br><span class="yr">Summer 2025</span></div>
+      <div class="pub-body">
+        <div class="title">A Watermark Hiding Framework for Large Language Models</div>
+        <p class="authors"><span class="me">Jo Eun Kim</span>, Seung Hyun Cho, Young-Sik Kim, Dongsup Jin</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= EDUCATION ================= -->
+  <section id="education">
+    <div class="sec-head"><h2>Education</h2><span class="sec-tag">timeline</span></div>
+    <div class="edu">
+      <div class="edu-item">
+        <div class="edu-side">
+          <div class="edu-when">2025 — present</div>
+          <img class="edu-logo" src="logos/dgist.png" alt="DGIST logo" onerror="this.style.display='none'">
+        </div>
+        <div class="edu-body">
+          <h3>M.S. Student, Artificial Intelligence</h3>
+          <p class="where">DGIST · Daegu, Republic of Korea</p>
+          <p class="note">PAC Lab, advised by Prof. Young-Sik Kim. Research on LLM watermarking, semantic security, and in-vehicle network security.</p>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-side">
+          <div class="edu-when">2021 — 2025</div>
+          <img class="edu-logo" src="logos/ulsan.png" alt="University of Ulsan logo" onerror="this.style.display='none'">
+        </div>
+        <div class="edu-body">
+          <h3>B.Eng. in AI Convergence</h3>
+          <p class="where">University of Ulsan · IT Convergence, College of Engineering</p>
+          <div class="stat-row">
+            <div class="stat"><span class="n">4.23 / 4.5</span><span class="l">Cumulative GPA</span></div>
+            <div class="stat"><span class="n">4.16 / 4.5</span><span class="l">Major GPA</span></div>
+            <div class="stat"><span class="n">2 / 10</span><span class="l">Class rank</span></div>
+          </div>
+          <div class="courses">
+            <span class="chip">Deep Learning</span>
+            <span class="chip">Reinforcement Learning</span>
+            <span class="chip">Information Theory for ML</span>
+            <span class="chip">Advanced Information Theory</span>
+            <span class="chip">Big Data Analysis</span>
+            <span class="chip">Numerical Analysis for ML</span>
+            <span class="chip">Data Communications &amp; Networks</span>
+            <span class="chip">Advanced Deep Learning</span>
+            <span class="chip">Data Structures</span>
+            <span class="chip">Algorithms</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HIGHLIGHTS ================= -->
+  <section id="highlights">
+    <div class="sec-head"><h2>Highlights</h2><span class="sec-tag">in pictures</span></div>
+    <div class="gallery">
+      <figure class="shot"><img src="images/icml-poster.jpg" alt="Joeun Kim at the ICML 2026 poster" onerror="this.remove()"><figcaption>ICML 2026 · Poster</figcaption></figure>
+      <figure class="shot"><img src="images/icml-qa.jpg" alt="Poster Q&amp;A at ICML 2026" onerror="this.remove()"><figcaption>ICML 2026 · Q&amp;A</figcaption></figure>
+      <figure class="shot"><img src="images/icml-expo.jpg" alt="ICML 2026 expo hall" onerror="this.remove()"><figcaption>ICML 2026 · Expo</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- ================= TALKS ================= -->
+  <section id="talks">
+    <div class="sec-head"><h2>Presentations</h2><span class="sec-tag">on stage</span></div>
+    <div class="talks">
+      <div class="talk">
+        <div class="tv"><a href="https://icml.cc/virtual/2026/poster/63246" target="_blank" rel="noopener">ICML 2026</a></div>
+        <div class="tt">Block-wise Codeword Embedding for Reliable Multi-bit Text Watermarking<span>International Conference on Machine Learning</span></div>
+      </div>
+      <div class="talk">
+        <div class="tv">JCCI 2026</div>
+        <div class="tt">Security Vulnerability Analysis of Shao's Semantic Communication<span>Joint Conference on Communications and Information</span></div>
+      </div>
+      <div class="talk">
+        <div class="tv">ICTC 2025</div>
+        <div class="tt">LLM-based Hybrid Intrusion Detection for Automotive Ethernet and In-Vehicle Networks<span>International Conference on ICT Convergence</span></div>
+      </div>
+      <div class="talk">
+        <div class="tv">KICS 2025</div>
+        <div class="tt">A Watermark Hiding Framework for Large Language Models<span>KICS Summer Conference (Korea Institute of Communications and Information Sciences)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <span>© 2026 Joeun Kim · DGIST</span>
+    <span><a href="mailto:jowithu@dgist.ac.kr">jowithu@dgist.ac.kr</a> · <a href="https://github.com/joeunwithu" target="_blank" rel="noopener">github/joeunwithu</a></span>
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var gc = document.getElementById('gamecard');
+    if(!gc) return;
+    var xp = gc.querySelector('.xp-fill');
+    var lvl = gc.querySelector('.lvl');
+    var hint = gc.querySelector('.hint');
+    var MAX = 3, level = 0, busy = false, tReplant, tBurst;
+
+    function paint(){
+      gc.classList.remove('r1','r2','r3');
+      if(level >= 1) gc.classList.add('r1');
+      if(level >= 2) gc.classList.add('r2');
+      if(level >= 3) gc.classList.add('r3');
+      xp.style.width = (Math.max(level,0) / MAX * 100) + '%';
+      lvl.textContent = 'Lv.' + Math.max(level,1);
+      hint.textContent = (level >= MAX) ? 'tap to replant \u25B8' : 'tap to grow \u25B8';
+    }
+    function burst(){
+      gc.classList.remove('leveling'); void gc.offsetWidth; gc.classList.add('leveling');
+      clearTimeout(tBurst);
+      tBurst = setTimeout(function(){ gc.classList.remove('leveling'); }, 1500);
+    }
+    function grow(){
+      if(busy) return;
+      if(level < MAX){
+        level++; paint(); burst();
+      } else {
+        busy = true;
+        level = 0; paint();                       // shrink back to a seed
+        clearTimeout(tReplant);
+        tReplant = setTimeout(function(){         // then sprout anew
+          level = 1; paint(); burst(); busy = false;
+        }, 520);
+      }
+    }
+    gc.addEventListener('click', grow);
+    gc.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); grow(); }
+    });
+    setTimeout(function(){ level = 1; paint(); burst(); }, 450);  // sprout on load
+  })();
+</script>
+<script>
+(function(){
+  var root = document.documentElement;
+
+  // theme toggle (initial theme already set by head script)
+  var btn = document.getElementById('themebtn');
+  function icon(){ if(btn) btn.textContent = (root.dataset.theme === 'dark') ? '☀️' : '🌙'; }
+  icon();
+  if(btn) btn.addEventListener('click', function(){
+    root.dataset.theme = (root.dataset.theme === 'dark') ? 'light' : 'dark';
+    try{ localStorage.setItem('theme', root.dataset.theme); }catch(e){}
+    icon();
+  });
+
+  // scroll reveal
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce && 'IntersectionObserver' in window){
+    var els = document.querySelectorAll('.sec-head,.prose,.thread,.pub,.edu-item,.shot,.talk');
+    els.forEach(function(el){ el.classList.add('reveal'); });
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold:.12, rootMargin:'0px 0px -40px 0px' });
+    els.forEach(function(el){ io.observe(el); });
+  }
+
+  // progress bar + active section link
+  var prog = document.getElementById('progress');
+  var links = [].slice.call(document.querySelectorAll('.navlinks a'));
+  var secs = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll(){
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    if(prog) prog.style.width = (max > 0 ? (h.scrollTop / max * 100) : 0) + '%';
+    var y = h.scrollTop + 90, cur = null;
+    secs.forEach(function(s){ if(s.offsetTop <= y) cur = s.id; });
+    links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
+<script>
+  (function(){
+    var cc = document.getElementById('catcard'); if(!cc) return;
+    var out = document.getElementById('hellos');
+    var n = 0;
+    try{ n = parseInt(localStorage.getItem('hellos') || '0', 10) || 0; }catch(e){}
+    n += 1;                                   // count this visit
+    try{ localStorage.setItem('hellos', n); }catch(e){}
+    if(out) out.textContent = n;
+    var t;
+    function hi(){
+      n += 1;
+      try{ localStorage.setItem('hellos', n); }catch(e){}
+      if(out) out.textContent = n;
+      cc.classList.remove('hi'); void cc.offsetWidth; cc.classList.add('hi');
+      clearTimeout(t); t = setTimeout(function(){ cc.classList.remove('hi'); }, 900);
+    }
+    cc.addEventListener('click', hi);
+    cc.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); hi(); }
+    });
+  })();
+</script>
+</body>
+</html>
